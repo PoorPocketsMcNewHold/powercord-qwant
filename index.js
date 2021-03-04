@@ -13,7 +13,7 @@ module.exports = class DuckDuckGoSearch extends Plugin {
     );
 
     inject(
-      "logge-ddg-search",
+      "logge-qwant-search",
       MessageContextMenu,
       "default",
        (args, res) => {
@@ -24,7 +24,7 @@ module.exports = class DuckDuckGoSearch extends Plugin {
         if (
           !findInReactTree(
             res,
-            (c) => c.props && c.props.id === "logge-ddg-search"
+            (c) => c.props && c.props.id === "logge-qwant-search"
           ) &&
           args[0].target.tagName.toLowerCase() == "div" &&
           args[0].target.classList.contains("markup-2BOw-j") &&
@@ -44,11 +44,11 @@ module.exports = class DuckDuckGoSearch extends Plugin {
                   }
 
                   require("electron").shell.openExternal(
-                    `https://ddg.gg/${encodeURIComponent(markedText)}`
+                    `https://www.qwant.com/?q=${encodeURIComponent(markedText)}`
                   );
                 },
-                id: "logge-ddg-search",
-                label: "Search with DDG",
+                id: "logge-qwant-search",
+                label: "Search with Qwant",
               })
             )
           );
@@ -61,22 +61,23 @@ module.exports = class DuckDuckGoSearch extends Plugin {
     MessageContextMenu.default.displayName = "MessageContextMenu";
 
     powercord.api.commands.registerCommand({
-      command: "ddg",
-      description: "Sends a ddg link.",
+      command: "qwant",
+      description: "Sends a Qwant link.",
       usage: "{c} [ ...arguments ]",
       executor: (args) => ({
         send: true,
-        result: "https://ddg.gg/" + encodeURIComponent(args.join(" ")),
+        result: "https://www.qwant.com/?q=" + encodeURIComponent(args.join(" ")),
       }),
     });
   }
 
   pluginWillUnload() {
-    uninject("logge-ddg-search");
+    uninject("logge-qwant-search");
 
-    powercord.api.commands.unregisterCommand("ddg");
+    powercord.api.commands.unregisterCommand("qwant");
   }
 };
 
 // Inspired by With Mask and Juby210
 //Logge gay btw
+//Shamelessly modified and reposted from powercord-duckduckgo plugin of LoggeL, just because i wanted to use Qwant instead.
